@@ -147,7 +147,7 @@ public class InActivity  extends AppCompatActivity implements View.OnClickListen
     public void printAllFile(File f) {
 
         if (f.isFile()) {
-            if (f.toString().contains(".txt")) {
+            if (f.toString().contains(FinalDate.FFILE_TYPE)) {
                 insertMap = new HashMap<String, String>();
                 insertMap.put("parent", f.getParent());
                 insertMap.put("path", f.toString());
@@ -251,7 +251,7 @@ public class InActivity  extends AppCompatActivity implements View.OnClickListen
                             file.getName().substring(0,
                                     file.getName().length() - 4));
                 }
-                map.put("num", "格式：txt");
+                map.put("num", "格式："+FinalDate.FFILE_TYPE);
                 // 记录导入数据的形式
                 if (al.get(i).getLocal() == 0) {
                     map.put("imChoose", Image[1]);
