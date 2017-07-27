@@ -6,15 +6,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.trycatch.sendemail.date.FinalDate;
 import com.trycatch.sendemail.vo.FileMode;
+
+import java.io.File;
 import java.util.ArrayList;
+
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<FileMode> list;
@@ -76,7 +87,47 @@ public class MainActivity extends AppCompatActivity {
     
     
     public void initData(){
-       
+        Observable.just(Environment.getExternalStorageDirectory().listFiles())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread()).map(new Function<File[], ArrayList<FileMode>>() {
+            @Override
+            public ArrayList<FileMode> apply(@io.reactivex.annotations.NonNull File[] files) throws Exception {
+                int len = files.length;
+                ArrayList<FileMode> list_l = new ArrayList<FileMode>();
+                for (int i = 0; i < len; i++) {
+                    File file = files[i];
+                    if (file.toString().contains(FinalDate.FFILE_TYPE)) {
+                        FileMode fileMode = new FileMode();
+                        fileMode.setParent(file.getParent());
+                        fileMode.setName(file.getName());
+                        fileMode.setPath(file.toString());
+                        fileMode.setType("0");
+                        list_l.add(fileMode);
+                    }
+                }
+                return list_l;
+            }
+        }).subscribe(new Observer<ArrayList<FileMode>>() {
+            @Override
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
+                Log.d(TAG,"=onSubscribe=");
+            }
+
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull ArrayList<FileMode> fileModes) {
+                Log.d(TAG,fileModes.toString());
+            }
+
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable throwable) {
+                Log.d(TAG,"=onError="+throwable.toString());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG,"=onError=");
+            }
+        });
     }
     private void showProgressDialog(String msg) {
         mpDialog = new ProgressDialog(this);
