@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.trycatch.sendemail.date.FinalDate;
 import com.trycatch.sendemail.helper.BookDB;
+import com.trycatch.sendemail.helper.UserEmailDb;
 
 /**
  * 在此写用途
@@ -31,7 +32,6 @@ public class SendApplication extends Application{
     }
        
     private static void initDateBase() {
-        bookDB = new BookDB(context, FinalDate.DATABASE_TABKE);
     }
 
 }

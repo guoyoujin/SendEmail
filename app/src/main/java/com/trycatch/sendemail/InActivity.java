@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.trycatch.sendemail.adapter.FileDapter;
 import com.trycatch.sendemail.date.FinalDate;
 import com.trycatch.sendemail.helper.BookDB;
+import com.trycatch.sendemail.helper.UserEmailDb;
 import com.trycatch.sendemail.vo.UserEmail;
 import com.trycatch.sendemail.vo.BookVo;
 
@@ -584,10 +585,12 @@ public class InActivity  extends AppCompatActivity implements View.OnClickListen
                         setDate(2);
                         ContentValues values = new ContentValues();
                         values.put("type", 1);// key为字段名，value为值
+                        String file_name = new File(s).getName();
+                        values.put("name", file_name);// key为字段名，value为值
                         Cursor cur = db.query(FinalDate.DATABASE_TABKE, new String[]{"path"}, "type=2", null, null, null, null);
                         Log.i("hck","InActivity11: "+cur.getCount());
-                        db.update(FinalDate.DATABASE_TABKE, values, "path=?", new String[] { s });// 修改状态为图书被已被导入
-                        redFile(s);
+//                        db.update(FinalDate.DATABASE_TABKE, values, "path=?", new String[] { s });// 修改状态为图书被已被导入
+                        redFile(s,file_name);
                     } catch (SQLException e) {
                         Log.e(TAG, "R.id.aaaa onclick-> SQLException error", e);
                     } catch (Exception e) {
@@ -681,10 +684,13 @@ public class InActivity  extends AppCompatActivity implements View.OnClickListen
     }
     
     
-    public Workbook redFile(String path){
+    public Workbook redFile(String path,String table_name){
         if(path==null){
             return null;
         }
+        table_name ="test";
+        UserEmailDb userEmailDB = new UserEmailDb(this,table_name);
+        SQLiteDatabase dbss = userEmailDB.getWritableDatabase();
         Workbook wb = null;
         String ext = path.substring(path.lastIndexOf("."));
         try {
@@ -737,8 +743,17 @@ public class InActivity  extends AppCompatActivity implements View.OnClickListen
                            
                         }
                         map.put(String.valueOf(r+1), userEmail);
+                        try {
+                            String sql1 = "insert into " + table_name + " (first_name,last_name,email,country,addrerss,send_state) values('" + userEmail.getFirstName() + "','" + userEmail.getLastName()+ "','" + userEmail.getEmail() + "','" + userEmail.getCountry()+ "','" + userEmail.getAddrerss()+ "'," + userEmail.getSendState() + ")";
+                            dbss.execSQL(sql1);
+                        } catch (SQLException e) {
+                            Log.e(TAG, "insert sqlException error", e);
+                        } catch (Exception e) {
+                            Log.e(TAG, "insert Exception error", e);
+                        }
                         Log.d(TAG,"==adad===="+map.toString());
                     }
+                    dbss.close();
 
                 }
             }
