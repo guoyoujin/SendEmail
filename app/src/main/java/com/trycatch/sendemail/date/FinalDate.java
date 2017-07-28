@@ -11,6 +11,7 @@ public class FinalDate {
 	public static final String FLAG="hiapk";
 
 	public static final String FFILE_TYPE=".xlsx";
+	public static final String FFILE_TYPE2=".xls";
 	
 	public static long tme;
 	public static ServiceConnection mConnection;

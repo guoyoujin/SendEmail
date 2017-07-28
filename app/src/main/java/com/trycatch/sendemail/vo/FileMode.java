@@ -15,6 +15,39 @@ public class FileMode {
     private String parent;
     private String name;
     private String Type;
+    private String parentName;
+    private int count;
+    private boolean isChecked;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FileMode fileMode = (FileMode) o;
+
+        if (count != fileMode.count) return false;
+        if (isChecked != fileMode.isChecked) return false;
+        if (path != null ? !path.equals(fileMode.path) : fileMode.path != null) return false;
+        if (parent != null ? !parent.equals(fileMode.parent) : fileMode.parent != null)
+            return false;
+        if (name != null ? !name.equals(fileMode.name) : fileMode.name != null) return false;
+        if (Type != null ? !Type.equals(fileMode.Type) : fileMode.Type != null) return false;
+        return parentName != null ? parentName.equals(fileMode.parentName) : fileMode.parentName == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = path != null ? path.hashCode() : 0;
+        result = 31 * result + (parent != null ? parent.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (Type != null ? Type.hashCode() : 0);
+        result = 31 * result + (parentName != null ? parentName.hashCode() : 0);
+        result = 31 * result + count;
+        result = 31 * result + (isChecked ? 1 : 0);
+        return result;
+    }
 
     @Override
     public String toString() {
@@ -23,6 +56,9 @@ public class FileMode {
                 ", parent='" + parent + '\'' +
                 ", name='" + name + '\'' +
                 ", Type='" + Type + '\'' +
+                ", parentName='" + parentName + '\'' +
+                ", count=" + count +
+                ", isChecked=" + isChecked +
                 '}';
     }
 
@@ -56,5 +92,29 @@ public class FileMode {
 
     public void setType(String type) {
         Type = type;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }
