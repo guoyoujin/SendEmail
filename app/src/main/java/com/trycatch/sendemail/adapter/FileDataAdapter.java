@@ -37,7 +37,7 @@ public class FileDataAdapter extends ListBaseAdapter<FileMode> {
         TextView fileName = holder.getView(R.id.fileName);
         TextView fileCount = holder.getView(R.id.fileCount);
         SmoothCheckBox chBoxOrderReson = holder.getView(R.id.chBoxOrderReson);
-        fileImage.setImageResource(R.mipmap.my_fiction);
+        fileImage.setImageResource(R.mipmap.excel);
         fileName.setText("文件名："+fileMode.getName());
         chBoxOrderReson.setChecked(fileMode.isChecked(),fileMode.isChecked());
         chBoxOrderReson.setClickable(false);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +8,7 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.trycatch.sendemail.MainActivity">
+    tools:context="com.trycatch.sendemail.ExcelListActivity">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -23,34 +23,27 @@
             android:orientation="horizontal">
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent" 
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center|left"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:text="邮件发送"/>
+                android:text="excel列表展示"/>
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/addExcel"
+                android:id="@+id/allChange"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:gravity="center|right"
-                android:text="发送邮件"/>
+                android:text="全选"/>
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
     <android.support.v7.widget.LRecyclerView
-        android:id="@+id/lRecyclerView"
+        android:id="@+id/exceLRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.LRecyclerView>
-
-    <android.support.v7.widget.LRecyclerView
-        android:id="@+id/mRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
     </android.support.v7.widget.LRecyclerView>
 
 </LinearLayout>

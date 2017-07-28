@@ -190,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
         mFileLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.d(TAG, "==position===="+position);
                 List<FileMode> list =new ArrayList<FileMode>();
                 for (int i=0; i<mFileDataAdapter.getDataList().size(); i++){
                     FileMode fileMode = mFileDataAdapter.getDataList().get(i);
@@ -205,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 mFileDataAdapter.addAll(list);
                 lRecyclerView.refreshComplete(10);
                 mFileLRecyclerViewAdapter.notifyDataSetChanged();
-                Log.d(TAG,"=mFileDataAdapter.getDataList()==="+mFileDataAdapter.getDataList().toString());
+                ExcelListActivity.startActivity(MainActivity.this,mFileDataAdapter.getDataList().get(position).getPath());
                
             }
         });
@@ -295,7 +294,6 @@ public class MainActivity extends AppCompatActivity {
             int len = f2.length;
             for (int i = 0; i < len; i++) {
                 if(f2[i].isFile() && (f2[i].toString().contains(FinalDate.FFILE_TYPE) || f2[i].toString().contains(FinalDate.FFILE_TYPE2))){
-                    Log.d(TAG,"出现文件");
                     lg++;
                 }
             }
@@ -312,12 +310,10 @@ public class MainActivity extends AppCompatActivity {
             public List<FileMode> apply(@io.reactivex.annotations.NonNull File file) throws Exception {
                 List<FileMode> list_l = new ArrayList<FileMode>();
                 printAllFile(file,list_l);
-                
                 //警告，假如有重复数据的话就需要用到去重功能
                 HashSet h  =   new  HashSet<FileMode>(list_l);
                 list_l.clear();
                 list_l.addAll(h);
-                
                 Log.d(TAG,"=list_l="+list_l.toString());
                 if(list_l != null && list_l.size() > 0){
                     int length = list_l.size();

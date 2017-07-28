@@ -37,7 +37,7 @@ public class DataAdapter  extends ListBaseAdapter<FileMode> {
         ImageView fileImage = holder.getView(R.id.fileImage);
         TextView fileName = holder.getView(R.id.fileName);
         TextView fileCount = holder.getView(R.id.fileCount);
-        fileImage.setImageResource(R.mipmap.cartoon_folder);
+        fileImage.setImageResource(R.mipmap.file);
         fileName.setText("文件名："+fileMode.getName());
         fileCount.setText("文件数量："+fileMode.getCount());
         if(fileMode.getType()=="0"){
