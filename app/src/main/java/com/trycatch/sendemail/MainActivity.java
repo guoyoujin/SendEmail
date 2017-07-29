@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             }
         })
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(AndroidSchedulers.mainThread(),false,100)
         .subscribe(new Observer<List<FileMode>>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
             }
         })
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(AndroidSchedulers.mainThread(),false,100)
         .subscribe(new Observer<List<FileMode>>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
