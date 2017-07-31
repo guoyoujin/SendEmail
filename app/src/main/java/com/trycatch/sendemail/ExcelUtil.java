@@ -266,7 +266,6 @@ public class ExcelUtil {
         } catch (FileNotFoundException e) {
             Log.e("FileNotFoundException", e.toString());
         } catch (IOException e) {
-
             Log.e("IOException", e.toString());
         }
         return list;

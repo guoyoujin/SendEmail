@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -40,7 +42,6 @@ import org.reactivestreams.Publisher;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -63,6 +64,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -89,6 +91,8 @@ public class ExcelListActivity extends AppCompatActivity {
     private String fromEmail = "";
     private String copyEmail = "";
     private String fromEmailPassword = "";
+    private TSnackbar tSnackbar;
+    private Disposable disSendEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,7 @@ public class ExcelListActivity extends AppCompatActivity {
         }
         ButterKnife.bind(this);
         initActionBar();
+        initSnackBar();
         getIntentValue();
         initData();
         initRecyclerView();
@@ -369,18 +374,20 @@ public class ExcelListActivity extends AppCompatActivity {
     }
     
     public TSnackbar initSnackBar(){
-        TSnackbar bar = TSnackbar.make(exceLRecyclerView, "正在登录，请稍后...", TSnackbar.LENGTH_INDEFINITE, TSnackbar.APPEAR_FROM_BOTTOM_TO_TOP);
-        bar.addIcon(R.mipmap.ic_launcher,100,100);
-        bar.setAction("取消", new View.OnClickListener() {
+        tSnackbar = TSnackbar.make((ViewGroup) findViewById(android.R.id.content).getRootView(), "正在登录，请稍后...", TSnackbar.LENGTH_INDEFINITE, TSnackbar.APPEAR_FROM_BOTTOM_TO_TOP);
+        tSnackbar.addIcon(R.mipmap.ic_launcher,100,100);
+        tSnackbar.setAction("取消", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(!disSendEmail.isDisposed()){
+                    disSendEmail.dispose();
+                }
             }
         });
-        bar.setPromptThemBackground(Prompt.SUCCESS);
-        return bar;
+        tSnackbar.setPromptThemBackground(Prompt.SUCCESS);
+        tSnackbar.addIconProgressLoading(0,true,false);
+        return tSnackbar;
     }
-    
     
     
     public void senEmailHtml(UserEmail userEmail){
@@ -441,24 +448,50 @@ public class ExcelListActivity extends AppCompatActivity {
     public String getMailServerPort() {
         return "587";
     }
-    
+    private int sendCount = 0;
     public void sendEmail(List<UserEmail> list){
         Log.d(TAG, "List===>>>"+list.toString());
-        Flowable.just(list).flatMap(new Function<List<UserEmail>, Publisher<UserEmail>>() {
+        sendCount = 0;
+        tSnackbar.setText(String.format("正在发送%s",sendCount));
+        tSnackbar.show();
+        disSendEmail =  Flowable.just(list).flatMap(new Function<List<UserEmail>, Publisher<UserEmail>>() {
             @Override
             public Publisher<UserEmail> apply(@NonNull List<UserEmail> userEmails) throws Exception {
                 Log.d(TAG, "userEmails===apply>>>"+userEmails.toString());
-                return Flowable.fromIterable(userEmails).delay(5, TimeUnit.SECONDS);
+                return Flowable.fromIterable(userEmails);
             }
         })
         .subscribeOn(Schedulers.newThread())
         .observeOn(Schedulers.newThread(),false,100)
-        .subscribe(new Consumer<UserEmail>() {
+        .flatMap(new Function<UserEmail, Publisher<UserEmail>>() {
             @Override
-            public void accept(@NonNull UserEmail userEmail) throws Exception {
+            public Publisher<UserEmail> apply(@NonNull UserEmail userEmail) throws Exception {
                 Log.d(TAG, "userEmail===>>>"+userEmail);
                 senEmailHtml(userEmail);
                 ExcelUtil.setExceLUserMail(workBook,userEmail,file_path);
+                SystemClock.sleep(5000);
+                return Flowable.just(userEmail);
+            }
+        })
+        .subscribeOn(Schedulers.newThread())
+        .observeOn(AndroidSchedulers.mainThread(),false,100)
+        .subscribe(new Consumer<UserEmail>() {
+            @Override
+            public void accept(@NonNull UserEmail userEmail) throws Exception {
+                sendCount++;
+                Log.d(TAG, "userEmail===>>>" + String.format("已发送%s", sendCount));
+                tSnackbar.setText(String.format("正在发送%s", sendCount));
+                tSnackbar.show();
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                tSnackbar.dismiss();
+            }
+        }, new Action() {
+            @Override
+            public void run() throws Exception {
+                tSnackbar.dismiss();
             }
         });
     }
