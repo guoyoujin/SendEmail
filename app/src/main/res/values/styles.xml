@@ -16,4 +16,18 @@
         <item name="android:minHeight">50dp</item>
         <item name="android:textColor">#ffffff</item>
     </style>
+    <style name="divider_vertical_e1"><!-- 垂直分割线 -->
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">#e1e1e1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="divider_horizontal_e1"><!-- 水平分割线 -->
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#e1e1e1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
 </resources>

@@ -6,6 +6,7 @@
     android:clickable="false"
     android:layout_height="70dp">
     <ImageView
+        android:id="@+id/imgEmail"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
@@ -24,7 +25,7 @@
         >
         <LinearLayout
             android:layout_weight="1"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:clickable="false"
             android:orientation="horizontal"
@@ -45,7 +46,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_weight="1"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:clickable="false"
@@ -62,5 +63,39 @@
                 android:layout_width="wrap_content"
                 />
         </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="false"
+            android:layout_gravity="center_vertical"
+            >
+            <TextView
+                android:id="@+id/tv_address"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:text="数量："
+                android:clickable="false"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="8dp"
+        android:clickable="false"
+        android:gravity="right">
+        <com.trycatch.sendemail.checkbox.SmoothCheckBox
+            android:id="@+id/chBoxOrderReson"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:clickable="false"
+            android:focusable="true"
+            android:layout_gravity="center_vertical|right"
+            />
     </LinearLayout>
 </LinearLayout>

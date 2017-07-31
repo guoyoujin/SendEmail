@@ -1,12 +1,12 @@
 package com.trycatch.sendemail.adapter;
 
 import android.content.Context;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.trycatch.sendemail.R;
+import com.trycatch.sendemail.checkbox.SmoothCheckBox;
 import com.trycatch.sendemail.vo.UserEmail;
-
-import static com.trycatch.sendemail.R.id.fileName;
 
 /**
  * 在此写用途
@@ -35,7 +35,18 @@ public class ExcelAdapter extends ListBaseAdapter<UserEmail> {
         UserEmail userEmail = mDataList.get(position);
         TextView tvTitle = holder.getView(R.id.tvTitle);
         TextView tvInfo = holder.getView(R.id.tvInfo);
-        tvTitle.setText("用户名："+userEmail.getFirstName()+" "+ userEmail.getLastName()+ "       邮箱："+userEmail.getEmail());
-        tvInfo.setText("国家："+userEmail.getCountry()+ "    地址："+userEmail.getCountry());
+        TextView tv_address = holder.getView(R.id.tv_address);
+        ImageView imgEmail = holder.getView(R.id.imgEmail);
+        if(userEmail.getSendState()==1){
+            imgEmail.setImageResource(R.mipmap.send_email);
+        }else{
+            imgEmail.setImageResource(R.mipmap.no_send_email);
+        }
+        SmoothCheckBox chBoxOrderReson = holder.getView(R.id.chBoxOrderReson);
+        tvTitle.setText("姓名："+userEmail.getFirstName()+userEmail.getLastName());
+        tvInfo.setText("邮箱："+userEmail.getEmail());
+        tv_address.setText("国家："+userEmail.getCountry());
+        chBoxOrderReson.setChecked(userEmail.isChecked(),false);
+        chBoxOrderReson.setClickable(false);
     }
 }

@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent" 
                 android:layout_weight="1"
-                android:gravity="center|left"
+                android:gravity="center"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:text="邮件发送"/>
@@ -33,9 +33,9 @@
                 android:id="@+id/addExcel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
+                android:visibility="gone"
                 android:gravity="center|right"
                 android:text="发送邮件"/>
         </LinearLayout>

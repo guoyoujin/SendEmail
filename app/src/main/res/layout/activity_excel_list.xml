@@ -28,7 +28,7 @@
                 android:gravity="center|left"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:text="excel列表展示"/>
+                android:text="excel数据展示"/>
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/allChange"
                 android:layout_width="0dp"
@@ -40,10 +40,22 @@
                 android:text="全选"/>
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
-    <android.support.v7.widget.LRecyclerView
-        android:id="@+id/exceLRecyclerView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.LRecyclerView>
-
+        <android.support.v7.widget.LRecyclerView
+            android:id="@+id/exceLRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.LRecyclerView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatActionbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right|end"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/email"
+            />
+    </FrameLayout>
 </LinearLayout>

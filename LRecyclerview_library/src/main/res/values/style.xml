@@ -23,5 +23,4 @@
         <item name="maxHeight">36dip</item>
         <item name="indicatorName">LineSpinFadeLoaderIndicator</item>
     </style>
-
 </resources>

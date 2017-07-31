@@ -47,7 +47,9 @@
             android:name=".InActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ExcelListActivity"></activity>
+        <activity android:name=".ExcelListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

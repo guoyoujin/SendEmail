@@ -17,7 +17,10 @@ public class UserEmail {
     private String email;
     private String country;
     private String addrerss;
+    private boolean isChecked;
     private int sendState;
+    private int row;
+    private int sheetIndex;
 
     @Override
     public String toString() {
@@ -27,7 +30,10 @@ public class UserEmail {
                 ", email='" + email + '\'' +
                 ", country='" + country + '\'' +
                 ", addrerss='" + addrerss + '\'' +
+                ", isChecked=" + isChecked +
                 ", sendState=" + sendState +
+                ", row=" + row +
+                ", sheetIndex=" + sheetIndex +
                 '}';
     }
 
@@ -71,11 +77,35 @@ public class UserEmail {
         this.addrerss = addrerss;
     }
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
     public int getSendState() {
         return sendState;
     }
 
     public void setSendState(int sendState) {
         this.sendState = sendState;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getSheetIndex() {
+        return sheetIndex;
+    }
+
+    public void setSheetIndex(int sheetIndex) {
+        this.sheetIndex = sheetIndex;
     }
 }

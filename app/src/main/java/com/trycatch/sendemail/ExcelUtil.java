@@ -19,10 +19,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 在此写用途
- *
+ *https://gist.github.com/madan712/3912272
  * @FileName: com.trycatch.sendemail.ExcelUtil.java
  * @author: guoyoujin
  * @mail: guoyoujin123@gmail.com
@@ -121,6 +123,8 @@ public class ExcelUtil {
                 }
                 int cells = row.getPhysicalNumberOfCells();
                 UserEmail userEmail  = new UserEmail();
+                userEmail.setRow(r);
+                userEmail.setSheetIndex(k);
                 for (int c = 0; c < cells; c++) {
                     Cell cell = row.getCell(c);
                     if (cell == null) {
@@ -149,7 +153,39 @@ public class ExcelUtil {
                 list.add(userEmail);
             }
         }
+        try {
+            wb.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return list;
+    }
+
+
+    public static void setExceLUserMail(Workbook wb,UserEmail userEmail,String filePath){
+        Sheet sheet = wb.getSheetAt(userEmail.getSheetIndex());
+        Row row = sheet.getRow(userEmail.getRow());
+        try {
+            if (row == null) {
+                return;
+            }
+//            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            if(row!=null ){
+                if(row.getCell(5,Row.CREATE_NULL_AS_BLANK)==null){
+                    row.getCell(5,Row.CREATE_NULL_AS_BLANK).setCellValue(1+"");
+                }else{
+                    row.getCell(5,Row.CREATE_NULL_AS_BLANK).setCellValue(1+"");
+                }
+            }
+//            wb.write(fileOutputStream);
+            wb.close();
+//            fileOutputStream.flush();
+//            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -218,18 +254,30 @@ public class ExcelUtil {
         return list;
     }
 
-
-    public static boolean isExcel2003(String filePath)
-    {
-
+    public static boolean isExcel2003(String filePath){
         return filePath.matches("^.+\\.(?i)(xls)$");
-
     }
 
-    public static boolean isExcel2007(String filePath)
-    {
-
+    public static boolean isExcel2007(String filePath) {
         return filePath.matches("^.+\\.(?i)(xlsx)$");
+    }
 
+    /**
+     * 验证邮箱地址是否正确
+     * @param email
+     * @return
+     */
+    public static boolean checkEmail(String email){
+        boolean flag = false;
+        try{
+            String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+            Pattern regex = Pattern.compile(check);
+            Matcher matcher = regex.matcher(email);
+            flag = matcher.matches();
+        }catch(Exception e){
+            Log.e("验证邮箱地址错误", e.toString());
+            flag = false;
+        }
+        return flag;
     }
 }
