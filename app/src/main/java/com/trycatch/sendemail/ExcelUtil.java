@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.regex.Pattern;
 /**
  * 在此写用途
  *https://gist.github.com/madan712/3912272
+ * https://github.com/centic9/poi-on-android
  * @FileName: com.trycatch.sendemail.ExcelUtil.java
  * @author: guoyoujin
  * @mail: guoyoujin123@gmail.com
@@ -147,7 +149,7 @@ public class ExcelUtil {
                         userEmail.setAddrerss(value);
                     }
                     if(c==5){
-                        userEmail.setSendState(Integer.getInteger(value));
+                        userEmail.setSendState(Integer.parseInt(value));
                     }
                 }
                 list.add(userEmail);
@@ -162,25 +164,41 @@ public class ExcelUtil {
     }
 
 
-    public static void setExceLUserMail(Workbook wb,UserEmail userEmail,String filePath){
+    public static void setExceLUserMail(Workbook wbs,UserEmail userEmail,String filePath){
+        Workbook wb = null;
+        InputStream is = null;
+        try {
+            is = new FileInputStream(filePath);
+            if(ExcelUtil.isExcel2003(filePath)){
+                wb = new HSSFWorkbook(is);
+            }else if(ExcelUtil.isExcel2007(filePath)){
+                wb = new XSSFWorkbook(is);
+            }else{
+                wb=null;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+            Log.e("IOException", e.toString());
+        }
         Sheet sheet = wb.getSheetAt(userEmail.getSheetIndex());
         Row row = sheet.getRow(userEmail.getRow());
         try {
             if (row == null) {
                 return;
             }
-//            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             if(row!=null ){
-                if(row.getCell(5,Row.CREATE_NULL_AS_BLANK)==null){
-                    row.getCell(5,Row.CREATE_NULL_AS_BLANK).setCellValue(1+"");
+                if(row.getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)==null){
+                    row.getCell(5,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(1+"");
                 }else{
-                    row.getCell(5,Row.CREATE_NULL_AS_BLANK).setCellValue(1+"");
+                    row.createCell(5).setCellValue(1+"");
                 }
             }
-//            wb.write(fileOutputStream);
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            wb.write(fileOut);
+            fileOut.flush();
+            fileOut.close();
             wb.close();
-//            fileOutputStream.flush();
-//            fileOutputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

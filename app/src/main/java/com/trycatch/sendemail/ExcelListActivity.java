@@ -94,6 +94,10 @@ public class ExcelListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_excel_list);
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && android.os.Build.VERSION.SDK_INT<=Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -396,7 +400,7 @@ public class ExcelListActivity extends AppCompatActivity {
                     Address to = new InternetAddress(userEmail.getEmail());
                     // Message.RecipientType.TO属性表示接收者的类型为TO
                     mailMessage.setRecipient(Message.RecipientType.TO, to);
-                    mailMessage.setReplyTo(new Address[]{new InternetAddress(copyEmail)});
+                    mailMessage.setRecipient(Message.RecipientType.CC,new InternetAddress((copyEmail)));
                     // 设置邮件消息的主题
                     mailMessage.setSubject(title);
                     // 设置邮件消息发送的时间
