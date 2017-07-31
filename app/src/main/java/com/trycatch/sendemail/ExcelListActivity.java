@@ -22,6 +22,8 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.trycatch.sendemail.adapter.ExcelAdapter;
 import com.trycatch.sendemail.vo.UserEmail;
 
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,6 +46,9 @@ public class ExcelListActivity extends AppCompatActivity {
     LRecyclerView exceLRecyclerView;
     @BindView(R.id.allChange)
     TextView allChange;
+    
+    
+    private Workbook workBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +93,8 @@ public class ExcelListActivity extends AppCompatActivity {
         Observable.just(file_path).map(new Function<String, List<UserEmail>>() {
             @Override
             public List<UserEmail> apply(@io.reactivex.annotations.NonNull String path) throws Exception {
-                return ExcelUtil.redFile(path);
+                workBook = ExcelUtil.getWorkBook(path);
+                return ExcelUtil.redWorkBookGetData(workBook);
             }
         })
         .subscribeOn(Schedulers.io())
@@ -102,6 +108,10 @@ public class ExcelListActivity extends AppCompatActivity {
             @Override
             public void onNext(@io.reactivex.annotations.NonNull List<UserEmail> list_user_email) {
                 Log.d(TAG,list_user_email.toString());
+                mExcelAdapter.addAll(list_user_email);
+                exceLRecyclerView.refreshComplete(10);
+                dismissDialog();
+                
             }
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable throwable) {
@@ -115,6 +125,11 @@ public class ExcelListActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void dismissDialog(){
+        if(mpDialog!=null&&mpDialog.isShowing()){
+            mpDialog.dismiss();
+        }
     }
     
     public void initRecyclerView(){

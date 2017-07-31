@@ -82,6 +82,75 @@ public class ExcelUtil {
         }
         return value;
     }
+    
+    
+    public static Workbook getWorkBook(String filePath){
+        Workbook wb = null;
+        InputStream is = null;
+        try {
+            is = new FileInputStream(filePath);
+            if(ExcelUtil.isExcel2003(filePath)){
+                wb = new HSSFWorkbook(is);
+            }else if(ExcelUtil.isExcel2007(filePath)){
+                wb = new XSSFWorkbook(is);
+            }else{
+                wb=null;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+
+            Log.e("IOException", e.toString());
+        }
+        return wb;
+        
+    }
+    
+    public static List<UserEmail> redWorkBookGetData(Workbook wb){
+        List<UserEmail> list = new ArrayList<>();
+        if(wb==null){
+            return null;
+        }
+        for (int k = 0; k < wb.getNumberOfSheets(); k++) {
+            Sheet sheet = wb.getSheetAt(k);
+            int rows = sheet.getPhysicalNumberOfRows();
+            for (int r = 0; r < rows; r++) {
+                Row row = sheet.getRow(r);
+                if (row == null) {
+                    continue;
+                }
+                int cells = row.getPhysicalNumberOfCells();
+                UserEmail userEmail  = new UserEmail();
+                for (int c = 0; c < cells; c++) {
+                    Cell cell = row.getCell(c);
+                    if (cell == null) {
+                        continue;
+                    }
+                    String value = getCellValue(cell);
+                    if(c==0){
+                        userEmail.setFirstName(value);
+                    }
+                    if(c==1){
+                        userEmail.setLastName(value);
+                    }
+                    if(c==2){
+                        userEmail.setEmail(value);
+                    }
+                    if(c==3){
+                        userEmail.setCountry(value);
+                    }
+                    if(c==4){
+                        userEmail.setAddrerss(value);
+                    }
+                    if(c==5){
+                        userEmail.setSendState(Integer.getInteger(value));
+                    }
+                }
+                list.add(userEmail);
+            }
+        }
+        return list;
+    }
 
 
     public static List<UserEmail> redFile(String path){
@@ -90,17 +159,17 @@ public class ExcelUtil {
         }
         List<UserEmail> list = new ArrayList<>();
         Workbook wb = null;
-        String ext = path.substring(path.lastIndexOf("."));
         try {
             InputStream is = new FileInputStream(path);
-            if(".xls".equals(ext)){
+            if(ExcelUtil.isExcel2003(path)){
                 wb = new HSSFWorkbook(is);
-            }else if(".xlsx".equals(ext)){
+            }else if(ExcelUtil.isExcel2007(path)){
                 wb = new XSSFWorkbook(is);
             }else{
                 wb=null;
             }
             if (wb!=null){
+                Log.d("getNumberOfSheets",wb.getNumberOfSheets()+"");
                 for (int k = 0; k < wb.getNumberOfSheets(); k++) {
                     Sheet sheet = wb.getSheetAt(k);
                     int rows = sheet.getPhysicalNumberOfRows();
@@ -135,8 +204,8 @@ public class ExcelUtil {
                             if(c==5){
                                 userEmail.setSendState(Integer.getInteger(value));
                             }
-                            list.add(userEmail);
                         }
+                        list.add(userEmail);
                     }
                 }
             }
@@ -147,5 +216,20 @@ public class ExcelUtil {
             Log.e("IOException", e.toString());
         }
         return list;
+    }
+
+
+    public static boolean isExcel2003(String filePath)
+    {
+
+        return filePath.matches("^.+\\.(?i)(xls)$");
+
+    }
+
+    public static boolean isExcel2007(String filePath)
+    {
+
+        return filePath.matches("^.+\\.(?i)(xlsx)$");
+
     }
 }
