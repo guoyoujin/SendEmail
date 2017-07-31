@@ -443,10 +443,30 @@ public class ExcelListActivity extends AppCompatActivity {
         return p;
     }
     public String getMailServerHost() {
-        return "smtp.qq.com";
+        String str = "smtp.qq.com";
+        if(str.endsWith("@gmail.com")){
+            str = "smtp.gmail.c";
+        }
+        if(str.endsWith("@qq.com")){
+            str="smtp.qq.com";
+        }
+        if(str.endsWith("@163.com")){
+            str="smtp.163.com";
+        }
+        return str;
     }
     public String getMailServerPort() {
-        return "587";
+        String str = "587";
+        if(str.endsWith("@gmail.com")){
+            str = "587";
+        }
+        if(str.endsWith("@qq.com")){
+            str="587";
+        }
+        if(str.endsWith("@163.com")){
+            str="994";
+        }
+        return str;
     }
     private int sendCount = 0;
     public void sendEmail(List<UserEmail> list){
