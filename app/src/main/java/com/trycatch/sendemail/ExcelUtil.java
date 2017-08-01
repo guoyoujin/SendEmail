@@ -25,7 +25,8 @@ import java.util.regex.Pattern;
 
 /**
  * 在此写用途
- *https://gist.github.com/madan712/3912272
+ * http://lovexiaoyang.blog.51cto.com/10006124/1886483
+ * https://gist.github.com/madan712/3912272
  * https://github.com/centic9/poi-on-android
  * @FileName: com.trycatch.sendemail.ExcelUtil.java
  * @author: guoyoujin
