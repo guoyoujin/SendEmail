@@ -14,11 +14,13 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -47,6 +49,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.android.support:multidex:1.0.1'
     compile project(path: ':LRecyclerview_library')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
@@ -56,5 +59,6 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     testCompile 'junit:junit:4.12'
     compile 'com.trycatch.android:mysnackbar:1.2.2'
+    compile files('libs/poishadow-all.jar')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
 }

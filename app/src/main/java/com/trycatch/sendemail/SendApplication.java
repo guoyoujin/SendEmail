@@ -2,10 +2,9 @@ package com.trycatch.sendemail;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
-import com.trycatch.sendemail.date.FinalDate;
 import com.trycatch.sendemail.helper.BookDB;
-import com.trycatch.sendemail.helper.UserEmailDb;
 
 /**
  * 在此写用途
@@ -17,7 +16,7 @@ import com.trycatch.sendemail.helper.UserEmailDb;
  * @version: V1.0 <描述当前版本功能>
  */
 
-public class SendApplication extends Application{
+public class SendApplication extends MultiDexApplication {
     public static BookDB bookDB;
     private static Context context;
     private static Application mApplication;
