@@ -28,7 +28,7 @@
         android:gravity="start"
         android:textColor="#646464"
         android:background="@drawable/diag_edit_bg"
-        android:hint="邮箱账号" />
+        android:hint="发件人邮箱账号" />
     <EditText
         android:id="@+id/editPassword"
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
         android:gravity="start"
         android:textColor="#646464"
         android:background="@drawable/diag_edit_bg"
-        android:hint="密码" />
+        android:hint="邮箱密码" />
     <EditText
         android:id="@+id/editCopyEmail"
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         android:gravity="start"
         android:textColor="#646464"
         android:background="@drawable/diag_edit_bg"
-        android:hint="抄送账号" />
+        android:hint="抄送账号,没有可以不填写" />
     <EditText
         android:id="@+id/editEmailSubject"
         android:layout_width="match_parent"

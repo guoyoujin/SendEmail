@@ -106,6 +106,15 @@ public class ExcelListActivity extends AppCompatActivity {
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         ButterKnife.bind(this);
+        if("".equals(PreferenceUtils.getPrefString(this,PreKey.EMAIL_CONTENT,""))){
+            PreferenceUtils.setPrefString(this,PreKey.EMAIL_CONTENT,"<div id=\":op\" class=\"ii gt adP adO\"><div id=\":oo\" class=\"a3s aXjCH m15d832001e4f97b0\"><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">Dear&nbsp;Customer,</span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">&nbsp;</span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><font face=\"宋体\"><span style=\"font-size:13.3333px\">We get that you are in the market for replica watches</span></font><span style=\"font-family:宋体;font-size:10pt\">.&nbsp;We are very pleased to meet you.</span><span style=\"font-family:宋体;font-size:10pt\">&nbsp;</span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">Welcome to visit our watch site : </span><span style=\"font-family:宋体;color:rgb(0,0,0);font-size:10.0000pt\"><a href=\"http://www.ukcheapshop.co.uk\" target=\"_blank\" data-saferedirecturl=\"https://www.google.com/url?hl=zh-CN&amp;q=http://www.ukcheapshop.co.uk&amp;source=gmail&amp;ust=1501747087562000&amp;usg=AFQjCNHyHKHug96YWAiPbqfbxHbAyu152A\">www.ukcheapshop.co.uk</a></span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><br></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:13.3333px\">We offer AAA+ best replica watches, include rolex, omega, cartier, etc. 1:1 top quality, free shipping with 5-10 days can be delivered.</span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">&nbsp;</span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">To attract your attention and increase the sales performance, we will offer 6% discount coupon to you.</span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">please enter Redemption Code when you on checkout payment step</span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">Redemption Code:&nbsp;6disc</span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">the code will give you 6% discount for all your order.</span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">&nbsp;</span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">For help with any of our online services, please email to <a href=\"mailto:watchesonline@foxmail.com\" target=\"_blank\">watchesonline@foxmail.com</a></span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\"><br></span><span style=\"font-family:宋体;font-size:10pt\">Sincerely,</span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p><p class=\"MsoNormal\"><span style=\"font-family:宋体;font-size:10pt\">Amy<br></span><span style=\"font-family:宋体;font-size:10pt\"><u></u><u></u></span></p></div><div class=\"yj6qo\"></div></div>");
+        }
+        if("".equals(PreferenceUtils.getPrefString(this,PreKey.EMAIL_SUBJECT,""))){
+            PreferenceUtils.setPrefString(this,PreKey.EMAIL_SUBJECT,"Message from www.ukcheapshop.co.uk");
+        }
+        if("".equals(PreferenceUtils.getPrefString(this,PreKey.FROM_EMAIL,""))){
+            PreferenceUtils.setPrefString(this,PreKey.FROM_EMAIL,"watchesonline@foxmail.com");
+        }
         initActionBar();
         initSnackBar();
         getIntentValue();
@@ -389,7 +398,8 @@ public class ExcelListActivity extends AppCompatActivity {
     }
     
     
-    public void senEmailHtml(UserEmail userEmail){
+    public boolean senEmailHtml(UserEmail userEmail){
+        boolean flag = false;
         if(ExcelUtil.checkEmail(userEmail.getEmail())){
             if (userEmail.isChecked() && userEmail.getSendState()==0){
                 MyAuthenticator authenticator = null;
@@ -406,7 +416,10 @@ public class ExcelListActivity extends AppCompatActivity {
                     Address to = new InternetAddress(userEmail.getEmail());
                     // Message.RecipientType.TO属性表示接收者的类型为TO
                     mailMessage.setRecipient(Message.RecipientType.TO, to);
-                    mailMessage.setRecipient(Message.RecipientType.CC,new InternetAddress((copyEmail)));
+                    if("".equals(copyEmail) || copyEmail == null){
+                    }else{
+                        mailMessage.setRecipient(Message.RecipientType.CC,new InternetAddress((copyEmail))); 
+                    }
                     // 设置邮件消息的主题
                     mailMessage.setSubject(title);
                     // 设置邮件消息发送的时间
@@ -422,15 +435,20 @@ public class ExcelListActivity extends AppCompatActivity {
                     mailMessage.setContent(mainPart);
                     // 发送邮件
                     Transport.send(mailMessage);
+                    flag = true;
                 } catch (MessagingException ex) {
+                    flag = false;
                     ex.printStackTrace();
                 }
             }else{
+                flag = false;
                 Log.d(TAG,"已发送");
             }
         }else{
+            flag = false;
             Log.d(TAG,"邮箱非法");
         }
+        return flag;
     }
 
     public Properties getProperties() {
@@ -486,9 +504,11 @@ public class ExcelListActivity extends AppCompatActivity {
             @Override
             public Publisher<UserEmail> apply(@NonNull UserEmail userEmail) throws Exception {
                 Log.d(TAG, "userEmail===>>>"+userEmail);
-                senEmailHtml(userEmail);
-                ExcelUtil.setExceLUserMail(workBook,userEmail,file_path);
-                SystemClock.sleep(5000);
+                if(senEmailHtml(userEmail)){
+                    sendCount++;
+                    ExcelUtil.setExceLUserMail(workBook,userEmail,file_path);
+                    SystemClock.sleep(5000); 
+                }
                 return Flowable.just(userEmail);
             }
         })
@@ -497,7 +517,6 @@ public class ExcelListActivity extends AppCompatActivity {
         .subscribe(new Consumer<UserEmail>() {
             @Override
             public void accept(@NonNull UserEmail userEmail) throws Exception {
-                sendCount++;
                 Log.d(TAG, "userEmail===>>>" + String.format("已发送%s", sendCount));
                 tSnackbar.setText(String.format("正在发送%s", sendCount));
                 tSnackbar.show();
