@@ -455,33 +455,40 @@ public class ExcelListActivity extends AppCompatActivity {
         Properties p = new Properties();
         p.put("mail.smtp.auth", "true");
         p.put("mail.smpt.starttls.enable", "true");
-        p.put("mail.smtp.host", getMailServerHost());
-        p.put("mail.smtp.port", getMailServerPort());
+        p.put("mail.smtp.host", getMailServerHost(fromEmail));
+        p.put("mail.smtp.port", getMailServerPort(fromEmail));
         return p;
     }
-    public String getMailServerHost() {
+    public String getMailServerHost(String strEmail) {
         String str = "smtp.qq.com";
-        if(str.endsWith("@gmail.com")){
+        if(strEmail.endsWith("@gmail.com")){
             str = "smtp.gmail.c";
         }
-        if(str.endsWith("@qq.com")){
+        if(strEmail.endsWith("@qq.com")){
             str="smtp.qq.com";
         }
-        if(str.endsWith("@163.com")){
+        if(strEmail.endsWith("@163.com")){
             str="smtp.163.com";
         }
+        if(strEmail.endsWith("@foxmail.com")){
+            str="smtp.exmail.qq.com";
+        }
+        Log.d(TAG,"=str===>>"+str);
         return str;
     }
-    public String getMailServerPort() {
+    public String getMailServerPort(String strEmail) {
         String str = "587";
-        if(str.endsWith("@gmail.com")){
+        if(strEmail.endsWith("@gmail.com")){
             str = "587";
         }
-        if(str.endsWith("@qq.com")){
+        if(strEmail.endsWith("@qq.com")){
             str="587";
         }
-        if(str.endsWith("@163.com")){
+        if(strEmail.endsWith("@163.com")){
             str="994";
+        }
+        if(strEmail.endsWith("@foxmail.com")){
+            str="587";
         }
         return str;
     }
