@@ -6,12 +6,20 @@
 * excel文件格式介绍
 
 firstName | lastName | email | coutry | address | sendState
+
 -----|------
-guo | youjin | test@qq.com | china | bejing | 0
-guo | youjin | test@qq.com | china | bejing | 0
-guo | youjin | test@qq.com | china | bejing | 0
+
+
 guo | youjin | test@qq.com | china | bejing | 0
 
-用的时候excel表格按照上面的来即可，记住第三列一定要是email，第五列不要占用，留空即可，具体样子可以看根目录下的excel文件：    测试123.xlsx
+guo | youjin | test@qq.com | china | bejing | 0
+
+guo | youjin | test@qq.com | china | bejing | 0
+
+guo | youjin | test@qq.com | china | bejing | 0
+
+
+
+用的时候excel表格按照上面的来即可，记住第三列一定要是email，第五列不要占用，留空即可，具体样子可以看根目录下的excel文件：测试123.xlsx
 
 
