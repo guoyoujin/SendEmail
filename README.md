@@ -6,16 +6,10 @@
 * excel文件格式介绍
 
 firstName | lastName | email | coutry | address | sendState
-
------|------
-
-
+----------|----------|-------|--------|---------|----------
 guo | youjin | test@qq.com | china | bejing | 0
-
 guo | youjin | test@qq.com | china | bejing | 0
-
 guo | youjin | test@qq.com | china | bejing | 0
-
 guo | youjin | test@qq.com | china | bejing | 0
 
 
